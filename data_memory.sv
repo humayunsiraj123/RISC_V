@@ -7,7 +7,7 @@ module data_memory
 	input [31:0]WD,
 	output logic [31:0]RD
 	);
-	logic [31:0] mem [0:1023];
+	logic [31:0] mem [0:4095];
 
 	always_ff @(posedge clk) begin 
 		if(srst) begin
