@@ -3,39 +3,57 @@ module risc_core(
   input srst,
   );
 
-logic [31:0]pc_next=0;
-logic [31:0]pc =0;
 
+  logic [6:0] op_code;
+  logic [2:0] funct3;
+  logic [6:0] funct7;
+  logic zero;
+  logic branch;
+  logic result_src;
+  logic mem_w;
+  logic alu_src;
+  logic [1:0] imm_src;
+  logic reg_w;
+  logic pc_src;
+  logic [2:0] alu_control;
 
-// program_counter 
-pc_reg i_pc_reg (
-  .clk    (clk    ),
-  .srst   (srst   ),
-  .pc_next(pc_next),
-  .pc     (pc     )
+control_path i_control_path (
+  .op_code    (op_code    ),
+  .funct3     (funct3     ),
+  .funct7     (funct7     ),
+  .zero       (zero       ),
+  .branch     (branch     ),
+  .result_src (result_src ),
+  .mem_w      (mem_w      ),
+  .alu_src    (alu_src    ),
+  .imm_src    (imm_src    ),
+  .reg_w      (reg_w      ),
+  .pc_src     (pc_src     ),
+  .alu_control(alu_control)
 );
-//pc + pc_next addr
-always @(*) begin : proc_
- pc_next = 'd4 + pc;
-end
 
 
-  logic [31:0] Addr;
-  logic [31:0] RD;
 
-//instruction memory
-instr_mem i_instr_mem (
-  .Addr(Addr),
-  .RD(RD)
-  );
-
-  logic [11:0] imm;
-  logic [31:0] imm_ext;
-
-extende i_extende (
-  .imm(imm), 
-  .imm_ext(imm_ext));
-
+  logic negative;
+  logic carry;
+  logic over_flow;
+  
+data_path i_data_path (
+  .clk        (clk        ),
+  .srst       (srst       ),
+  .branch     (branch     ),
+  .result_src (result_src ),
+  .mem_w      (mem_w      ),
+  .alu_src    (alu_src    ),
+  .imm_src    (imm_src    ),
+  .reg_w      (reg_w      ),
+  .pc_src     (pc_src     ),
+  .alu_control(alu_control),
+  .zero       (zero       ),
+  .negative   (negative   ),
+  .carry      (carry      ),
+  .over_flow  (over_flow  )
+);
 
 
 
