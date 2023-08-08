@@ -11,11 +11,3 @@ endmodule
 
 
 
-module extende (
-	input [11:0]imm ,
-	output [31:0]imm_ext// Clock Enable
-);
-
-assign B = A[11] ? {{'1},A}:{{'0},A};
-
-endmodule

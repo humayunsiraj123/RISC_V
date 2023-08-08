@@ -40,10 +40,13 @@ module data_path (
   logic [31:0] b        ;
   logic [ 2:0] alu_cntrl;
   logic [31:0] ALUresult;
-  logic        zero     ;
-  logic        negative ;
-  logic        carry    ;
-  logic        over_flow;
+  // logic        zero     ;
+  // logic        negative ;
+  // logic        carry    ;
+  //logic        over_flow;
+  logic [31:0] pc_target;
+  logic [31:0] pc_plus4 ;
+
 
 // program_counter
   pc_reg i_pc_reg (
@@ -52,11 +55,22 @@ module data_path (
     .pc_next(pc_next),
     .pc     (pc     )
   );
+
 //pc + pc_next addr
   always @(*) begin : proc_
-    pc_next = 'd4 + pc;
+    pc_plus4  = 'd4 + pc;
+    pc_target = pc + imm_ext;//we add pc and immediate result addr to jump or branch addr
+
   end
 
+
+  //mux to select pc if pc src one then instead pc+4 ,pc+imm-ext to jump on that addr
+  mux_2to1 i_mux_2to1 (
+    .in1(pc_next  ),
+    .in2(pc_target),
+    .s  (pc_src   ),
+    .out(pc_next  )
+  );
 
 //instruction memory
   instr_mem i_instr_mem (
@@ -68,27 +82,36 @@ module data_path (
   logic [31:0] imm_ext;
 
 
+
+
+  logic [31:0]read_data//out of data memory
+    logic [31:0] f_mux_out; //
+  logic [31:0] WD3;
+
   register_file i_register_file (
     .A1 (instr[19:15]),
     .A2 (instr[24:20]),
     .A3 (instr[11:7] ),
+    .WD3(f_mux_out   ),
     .WE3(reg_w       ),
     .RD1(scrA        ),
-    .RD2(RD2        )
+    .RD2(RD2         )
+  );
+
+  extend i_extend (
+    .imm    (instr  ),
+    .imm_src(imm_src),
+    .imm_ext(imm_ext)  // o mux of alu
   );
 
 
- extende i_extende (
-    .imm    (imm    ),
-    .imm_ext(imm_ext)
+  mux_2to1 i_mux_2to1 (
+    .in1(RD2    ),
+    .in2(imm_ext), //form extended module
+    .s  (alu_src),
+    .out(scrB   )
   );
 
-mux_2to1 i_mux_2to1 (
-    .in1(RD2),
-    .in2(),
-    .s  (s  ),
-    .out(out)
-  );
 
   ALU i_ALU (
     .a        (scrA       ),
@@ -101,52 +124,26 @@ mux_2to1 i_mux_2to1 (
     .over_flow(over_flow  )
   );
 
-
-
-  extende i_extende (
-    .imm    (imm    ),
-    .imm_ext(imm_ext)
+  data_memory i_data_memory (
+    .clk (clk      ),
+    .srst(srst     ),
+    .WE  (mem_w    ),
+    .A   (ALUresult),
+    .WD  (RD2      ),
+    .RD  (read_data)
   );
 
 
-
-  ALU i_ALU (
-    .a        (a        ),
-    .b        (b        ),
-    .alu_cntrl(alu_cntrl),
-    .result   (result   ),
-    .zero     (zero     ),
-    .negative (negative ),
-    .carry    (carry    ),
-    .over_flow(over_flow)
-  );
-
-
-  logic [31:0] in1;
-  logic [31:0] in2;
-  logic        s  ;
-  logic [31:0] out;
 
   mux_2to1 i_mux_2to1 (
-    .in1(in1),
-    .in2(in2),
-    .s  (s  ),
-    .out(out)
+    .in1(ALUresult ),
+    .in2(read_data ),
+    .s  (result_src),
+    .out(f_mux_out )
   );
 
 
-  logic        WE;
-  logic [31:0] A ;
-  logic [31:0] WD;
 
-  data_memory i_data_memory (
-    .clk (clk ),
-    .srst(srst),
-    .WE  (WE  ),
-    .A   (A   ),
-    .WD  (WD  ),
-    .RD  (RD  )
-  );
 
 
 

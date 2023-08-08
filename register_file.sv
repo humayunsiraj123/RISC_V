@@ -2,10 +2,11 @@ module register_file(
 	input[4:0]A1,
 	input[4:0]A2,
 	input[4:0]A3,
-	input[31:0]WD3
+	input[31:0]WD3,
 	input WE3,
 	output logic [31:0]RD1,
 	output logic [31:0]RD2
+
 	);
 
 logic[31:0] memory[0:4095];
