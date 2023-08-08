@@ -1,13 +1,13 @@
 module main_decoder (
   input  [6:0] op_code   ,
   input  [2:0] funct3    ,
-  input  [4:0] funct7    ,
+  input  [6:0] funct7    ,
   output [1:0] alu_op    ,
   output       branch    ,
   output       result_src,
   output       mem_w     ,
   output       alu_src   ,
-  output [1:0] imm_src
+  output [1:0] imm_src ,
   output       reg_w
 );
 
@@ -29,3 +29,4 @@ module main_decoder (
   end
 
   end : proc_main_decoder
+endmodule : main_decoder
