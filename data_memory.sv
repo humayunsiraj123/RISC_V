@@ -10,13 +10,13 @@ module data_memory
 	logic [31:0] mem [4095:0];
 
 	always_ff @(posedge clk) begin 
-		if(srst) begin
-			mem[A] <= 0;
-		end else begin
-			mem[A] <= WE ? WD :0;
-		end
+		
+		mem[A] <= WE ? WD :0;
+		
 	end
 
-	assign RD = srst? 0:mem[A];
+	always_comb begin : proc_
+	 	RD = srst? 0:mem[A];
+	end
 
 endmodule
