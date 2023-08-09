@@ -8,9 +8,9 @@ module alu_decoder (
 
   always_comb begin : proc_alu_deocder
     if(alu_op==0)
-      alu_control = 3'b000;
+      alu_control = 3'b000;//add lw,sw instr
     else if(alu_op==2'b01)
-      alu_control = 3'b001;
+      alu_control = 3'b001;//sub branch
     else if(alu_op==2'b11)
       begin
         case({funct3,op_code[5],funct7[5]})
