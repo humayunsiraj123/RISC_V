@@ -2,7 +2,7 @@ module data_path (
   input              clk        , // Clock
   input              srst       , // Asynchronous reset active low
   input  logic       branch     ,
-  input  logic       result_src ,
+  input  logic [1:0] result_src ,
   input  logic       mem_w      ,
   input  logic       alu_src    ,
   input  logic [1:0] imm_src    ,
@@ -98,16 +98,18 @@ module data_path (
     .RD2(RD2         )
   );
 
+// sign immediate extending module
   extend i_extend (
     .imm    (instr  ),
     .imm_src(imm_src),
     .imm_ext(imm_ext)  // o mux of alu
   );
 
+//seleciton mux for  register file out2 to select input B for ALU
 
   mux_2to1 i_mux_2to1 (
     .in1(RD2    ),
-    .in2(imm_ext), //form extended module
+    .in2(imm_ext), //from extended module
     .s  (alu_src),
     .out(scrB   )
   );
@@ -133,14 +135,15 @@ module data_path (
     .RD  (read_data)
   );
 
-
-
-  mux_2to1 i_mux_2to1 (
+  mux_4to1 i_mux_4to1 (
     .in1(ALUresult ),
     .in2(read_data ),
+    .in3(pc_plus4  ),
+    .in4('0        ),
     .s  (result_src),
     .out(f_mux_out )
   );
+
 
 
 
