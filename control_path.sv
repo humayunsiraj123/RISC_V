@@ -15,7 +15,7 @@ module control_path (
 );
 
 
-  logic [1:0] alu_op; //wire of alu_op from main to alu decoder
+  logic [1:0] alu_op=0; //wire of alu_op from main to alu decoder
 // main decoder module of control path
 
   //logic [1:0] imm_src;

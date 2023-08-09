@@ -4,22 +4,22 @@ module risc_core (
 );
 
 
-  logic [6:0] op_code    ;
-  logic [2:0] funct3     ;
-  logic [6:0] funct7     ;
-  logic       zero       ;
-  logic       branch     ;
-  logic [1:0] result_src ;
-  logic       mem_w      ;
-  logic       alu_src    ;
-  logic [1:0] imm_src    ;
-  logic       reg_w      ;
-  logic       pc_src     ;
-  logic [2:0] alu_control;
-  logic       jump       ;
-  logic       negative   ;
-  logic       carry      ;
-  logic       over_flow  ;
+  logic [6:0] op_code    = 0;
+  logic [2:0] funct3     = 0;
+  logic [6:0] funct7     = 0;
+  logic       zero       = 0;
+  logic       branch     = 0;
+  logic [1:0] result_src = 0;
+  logic       mem_w      = 0;
+  logic       alu_src    = 0;
+  logic [1:0] imm_src    = 0;
+  logic       reg_w      = 0;
+  logic       pc_src     = 0;
+  logic [2:0] alu_control= 0;
+  logic       jump       = 0;
+  logic       negative   = 0;
+  logic       carry      = 0;
+  logic       over_flow  = 0;
 
  control_path i_control_path (
   .op_code    (op_code    ),

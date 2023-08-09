@@ -4,10 +4,13 @@ module pc_reg (
 	input        [31:0] pc_next,
 	output logic [31:0] pc
 );
+//initial begin
+
+//end
 
 	always_ff @(posedge clk) begin : proc_program_counter
 		if(srst) begin
-			pc <= 0;
+			pc <= 'h0;//sample program
 		end else begin
 			pc <= pc_next ;
 		end

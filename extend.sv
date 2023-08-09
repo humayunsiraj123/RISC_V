@@ -4,7 +4,7 @@ module extend (
 	output logic [31:0] imm_ext  // Clock Enable
 );
 
-	logic [11:0] A;
+	logic [11:0] A=0;
 	always_comb begin : proc_immediate_extend
 		case(imm_src)
 		2'b00 : imm_ext = {{20*{imm[31]}},imm[31:20]}; //for  lw type instru

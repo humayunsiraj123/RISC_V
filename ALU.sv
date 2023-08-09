@@ -9,8 +9,8 @@ module ALU #(parameter WIDTH=32) (
 	output logic             over_flow
 );
 
-	logic [WIDTH-1:0] sum ;
-	logic             cout;
+	logic [WIDTH-1:0] sum =0;
+	logic             cout=0;
 
 
 	always_comb begin :alu_control

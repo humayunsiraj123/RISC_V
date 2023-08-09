@@ -15,37 +15,37 @@ module data_path (
   output logic       over_flow
 );
 
-  logic [31:0] pc_next;
-  logic [31:0] pc     ;
+  logic [31:0] pc_next=0;
+  logic [31:0] pc     =0;
 
-  logic [31:0] Addr ;
-  logic [31:0] instr;
+  logic [31:0] Addr =0;
+  logic [31:0] instr=0;
 
-  logic [11:0] imm    ;
-  logic [31:0] imm_ext;
+  logic [11:0] imm     =0;
+  logic [31:0] imm_ext =0;
 
-  logic [31:0] scrA;
-  logic [31:0] scrB;
+  logic [31:0] scrA =0;
+  logic [31:0] scrB =0;
 
-  logic [ 4:0] A1 ;
-  logic [ 4:0] A2 ;
-  logic [ 4:0] A3 ;
-  logic        WE3;
-  logic [31:0] RD1;
-  logic [31:0] RD2;
+  logic [ 4:0] A1  =0;
+  logic [ 4:0] A2  =0;
+  logic [ 4:0] A3  =0;
+  logic        WE3 =0;
+  logic [31:0] RD1 =0;
+  logic [31:0] RD2 =0;
 
 
 
-  logic [31:0] a        ;
-  logic [31:0] b        ;
-  logic [ 2:0] alu_cntrl;
-  logic [31:0] ALUresult;
+  logic [31:0] a        =0;
+  logic [31:0] b        =0;
+  logic [ 2:0] alu_cntrl=0;
+  logic [31:0] ALUresult=0;
   // logic        zero     ;
   // logic        negative ;
   // logic        carry    ;
   //logic        over_flow;
-  logic [31:0] pc_target;
-  logic [31:0] pc_plus4 ;
+  logic [31:0] pc_target=0;
+  logic [31:0] pc_plus4=0 ;
 
 
 // program_counter

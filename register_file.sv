@@ -13,13 +13,19 @@ module register_file(
 
 logic[31:0] memory[31:0];
 
+//initial begin
+//lw instr
+//memory[0]  =0;
+//memory[6]  = 'd6;// example 1 x5
+//memory[10] ='h2004;//x9
+
+//end
+
+
 always_ff @(posedge clk) begin : proc_regiter_files
-	if(srst) begin
-		memory[A3] <= 0;
-	end else begin
-		memory[A3] <= WE3 ? WD3 :'0 ;
+	if(WE3)
+		memory[A3] <= WD3 ;
 	end
-end
 
 always_comb begin : proc_RD_x
 RD2 = srst ? 0: memory[A2];
