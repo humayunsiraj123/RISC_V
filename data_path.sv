@@ -78,25 +78,27 @@ module data_path (
     .RD  (instr)
   );
 
-  logic [11:0] imm    ;
-  logic [31:0] imm_ext;
 
 
 
 
-  logic [31:0]read_data//out of data memory
-    logic [31:0] f_mux_out; //
+  logic [31:0]read_data;//out of data memory
+  logic [31:0] f_mux_out; //
   logic [31:0] WD3;
 
+
   register_file i_register_file (
-    .A1 (instr[19:15]),
-    .A2 (instr[24:20]),
-    .A3 (instr[11:7] ),
-    .WD3(f_mux_out   ),
-    .WE3(reg_w       ),
-    .RD1(scrA        ),
-    .RD2(RD2         )
+    .clk (clk         ),
+    .srst(srst        ),
+    .A1  (instr[24:20]),
+    .A2  (instr[11:7] ),
+    .A3  (instr[19:15]),
+    .WD3 (f_mux_out   ),
+    .WE3 (reg_w       ),
+    .RD1 (scrA        ),
+    .RD2 (RD2         )
   );
+
 
 // sign immediate extending module
   extend i_extend (
@@ -107,7 +109,7 @@ module data_path (
 
 //seleciton mux for  register file out2 to select input B for ALU
 
-  mux_2to1 i_mux_2to1 (
+  mux_2to1 i2_mux_2to1 (
     .in1(RD2    ),
     .in2(imm_ext), //from extended module
     .s  (alu_src),

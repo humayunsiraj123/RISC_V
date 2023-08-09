@@ -2,11 +2,11 @@ module ALU #(parameter WIDTH=32) (
 	input  [WIDTH-1:0] a        ,
 	input  [WIDTH-1:0] b        ,
 	input  [      2:0] alu_cntrl,
-	output [WIDTH-1:0] result   ,
-	output             zero     ,
-	output             negative ,
-	output             carry    ,
-	output             over_flow
+	output logic [WIDTH-1:0] result   ,
+	output logic             zero     ,
+	output logic             negative ,
+	output logic             carry    ,
+	output logic             over_flow
 );
 
 	logic [WIDTH-1:0] sum ;

@@ -3,7 +3,7 @@ module alu_decoder (
   input  [6:0] funct7     ,
   input  [6:0] op_code    ,
   input  [1:0] alu_op     ,
-  output [2:0] alu_control
+  output logic [2:0] alu_control
 );
 
   always_comb begin : proc_alu_deocder

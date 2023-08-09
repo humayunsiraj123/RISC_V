@@ -3,7 +3,7 @@ module mux_2to1#(
 	input [WIDTH-1:0]in1,
 	input [WIDTH-1:0]in2,
 	input s,
-	output [WIDTH-1:0]out);
+	output logic [WIDTH-1:0]out);
 
 always_comb
 	out =s ? in2:in1;

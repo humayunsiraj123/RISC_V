@@ -6,7 +6,7 @@ module mux_4to1#(
 	input [WIDTH-1:0]in3,
 	input [WIDTH-1:0]in4,
 	input [1:0]s,
-	output [WIDTH-1:0]out);
+	output logic [WIDTH-1:0]out);
 
 always_comb
 	out =s[1] ? (s[0]? in4:in3):(s[0]? in2:in1);

@@ -1,7 +1,7 @@
 module extend (
 	input  [31:0] imm    ,
 	input  [1:0 ] imm_src,
-	output [31:0] imm_ext  // Clock Enable
+	output logic [31:0] imm_ext  // Clock Enable
 );
 
 	logic [11:0] A;
