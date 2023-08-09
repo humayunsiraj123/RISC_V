@@ -9,7 +9,7 @@ module register_file(
 
 	);
 
-logic[31:0] memory[0:4095];
+logic[31:0] memory[31:0];
 
 always_ff @(posedge clk) begin : proc_regiter_files
 	if(srst) begin
