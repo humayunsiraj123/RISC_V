@@ -7,14 +7,19 @@ module data_memory
 	input [31:0]WD,
 	output logic [31:0]RD
 	);
-	logic [31:0] mem [1023:0] ;
+	logic [31:0] mem [4096:0] ;
+initial begin
+	foreach(mem[i]) begin
+		mem[i]=i;
+	end
+end
 
-	always_ff @(posedge clk) begin 
+	always @(posedge clk) begin 
 		mem[A] <= WE ? WD :0;
 	end
 
-	always_comb begin : proc_
-	 	RD = srst? 0:mem[A];
+	always@(*) begin : proc_
+	 	RD = srst? 0: mem[A];
 	end
 
 endmodule

@@ -11,23 +11,23 @@ module register_file(
 
 	);
 
-logic[31:0] memory[31:0];
+logic[31:0][31:0] memory;
 
-//initial begin
+initial begin
 //lw instr
-//memory[0]  =0;
-//memory[6]  = 'd6;// example 1 x5
-//memory[10] ='h2004;//x9
+memory[0]  ='0;
+memory[5]  = 'd5;// example 1 x5
+memory[9] ='h8;//x9
 
-//end
+end
 
 
-always_ff @(posedge clk) begin : proc_regiter_files
+always @(posedge clk) begin : proc_regiter_files
 	if(WE3)
 		memory[A3] <= WD3 ;
 	end
 
-always_comb begin : proc_RD_x
+always @(*) begin : proc_RD_x
 RD2 = srst ? 0: memory[A2];
 RD1 = srst ? 0: memory[A1];
 end

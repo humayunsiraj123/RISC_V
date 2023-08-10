@@ -12,15 +12,15 @@ module data_path (
   output logic       zero       ,
   output logic       negative   ,
   output logic       carry      ,
-  output logic       over_flow
+  output logic       over_flow,
+  output logic [31:0] instr
 );
 
   logic [31:0] pc_next=0;
   logic [31:0] pc     =0;
 
   logic [31:0] Addr =0;
-  logic [31:0] instr=0;
-
+ 
   logic [11:0] imm     =0;
   logic [31:0] imm_ext =0;
 
@@ -60,13 +60,12 @@ module data_path (
   always @(*) begin : proc_
     pc_plus4  = 'd4 + pc;
     pc_target = pc + imm_ext;//we add pc and immediate result addr to jump or branch addr
-
   end
 
 
   //mux to select pc if pc src one then instead pc+4 ,pc+imm-ext to jump on that addr
   mux_2to1 i_mux_2to1 (
-    .in1(pc_next  ),
+    .in1(pc_plus4  ),
     .in2(pc_target),
     .s  (pc_src   ),
     .out(pc_next  )
@@ -90,9 +89,9 @@ module data_path (
   register_file i_register_file (
     .clk (clk         ),
     .srst(srst        ),
-    .A1  (instr[24:20]),
-    .A2  (instr[11:7] ),
-    .A3  (instr[19:15]),
+    .A1  (instr[19:15]),
+    .A2  (instr[24:20] ),
+    .A3  (instr[11:7]),
     .WD3 (f_mux_out   ),
     .WE3 (reg_w       ),
     .RD1 (scrA        ),

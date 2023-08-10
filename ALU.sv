@@ -23,10 +23,8 @@ module ALU #(parameter WIDTH=32) (
 		endcase
 
 		carry     = ~alu_cntrl[1] && cout;
-		over_flow = (sum[31] ^ a[31]) &&
-			(~(a[31] ^b[31] ^ alu_cntrl[0])) &&
-			~alu_cntrl[1];
-		zero     = &(~sum);
+		over_flow = (sum[31] ^ a[31]) &&(~(a[31] ^b[31] ^ alu_cntrl[0])) && ~alu_cntrl[1];
+		zero     = &(!sum);
 		negative = result[31];
 
 
