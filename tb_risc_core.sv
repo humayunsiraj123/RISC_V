@@ -7,6 +7,8 @@ module tb_risc_core ();
 		.srst(srst)
 	);
 
+	
+
 	always #10 clk =~clk;
 
 	initial begin

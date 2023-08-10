@@ -4,6 +4,16 @@ module risc_core (
 );
 
 
+typedef enum logic[6:0] {
+    LW     = 7'b0000011,
+    SW     = 7'b0100011,
+    BEQ    = 7'b1100011,
+    I_TYPE = 7'b0010011,//itype instruction
+    R_TYPE = 7'b0110011,
+    JAL    = 7'b1101111} instr_e;
+    instr_e instr_name;
+
+
   logic [ 6:0] op_code     = 0;
   logic [ 2:0] funct3      = 0;
   logic [ 6:0] funct7      = 0;
@@ -26,6 +36,7 @@ module risc_core (
     op_code = instr[6:0];
     funct3  = instr[14:12];
     funct7  = instr[31:25];
+      $cast(instr_name,instr[6:0]);
   end
 
   control_path i_control_path (

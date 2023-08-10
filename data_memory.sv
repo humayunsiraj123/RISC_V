@@ -9,9 +9,12 @@ module data_memory
 	);
 	logic [31:0] mem [4096:0] ;
 initial begin
-	foreach(mem[i]) begin
+	/*foreach(mem[i]) begin
 		mem[i]=i;
-	end
+	end*/
+	mem[4]='hA;
+	mem[8]='hf;
+	mem[12]='h1A;
 end
 
 	always @(posedge clk) begin 

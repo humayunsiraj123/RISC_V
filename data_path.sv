@@ -1,51 +1,50 @@
 module data_path (
-  input              clk        , // Clock
-  input              srst       , // Asynchronous reset active low
-  input  logic       branch     ,
-  input  logic [1:0] result_src ,
-  input  logic       mem_w      ,
-  input  logic       alu_src    ,
-  input  logic [1:0] imm_src    ,
-  input  logic       reg_w      ,
-  input  logic       pc_src     ,
-  input  logic [2:0] alu_control,
-  output logic       zero       ,
-  output logic       negative   ,
-  output logic       carry      ,
-  output logic       over_flow,
+  input               clk        , // Clock
+  input               srst       , // Asynchronous reset active low
+  input  logic        branch     ,
+  input  logic [ 1:0] result_src ,
+  input  logic        mem_w      ,
+  input  logic        alu_src    ,
+  input  logic [ 1:0] imm_src    ,
+  input  logic        reg_w      ,
+  input  logic        pc_src     ,
+  input  logic [ 2:0] alu_control,
+  output logic        zero       ,
+  output logic        negative   ,
+  output logic        carry      ,
+  output logic        over_flow  ,
   output logic [31:0] instr
 );
 
-  logic [31:0] pc_next=0;
-  logic [31:0] pc     =0;
+  logic [31:0] pc_next = 0;
+  logic [31:0] pc      = 0;
+  logic [31:0] Addr    = 0;
 
-  logic [31:0] Addr =0;
- 
-  logic [11:0] imm     =0;
-  logic [31:0] imm_ext =0;
+  logic [11:0] imm     = 0;
+  logic [31:0] imm_ext = 0;
 
-  logic [31:0] scrA =0;
-  logic [31:0] scrB =0;
+  logic [31:0] scrA = 0;
+  logic [31:0] scrB = 0;
 
-  logic [ 4:0] A1  =0;
-  logic [ 4:0] A2  =0;
-  logic [ 4:0] A3  =0;
-  logic        WE3 =0;
-  logic [31:0] RD1 =0;
-  logic [31:0] RD2 =0;
-
+  logic [ 4:0] A1     ;
+  logic [ 4:0] A2     ;
+  logic [ 4:0] A3     ;
+  logic        WE3 = 0;
+  logic [31:0] RD1    ;
+  logic [31:0] RD2 = 0;
 
 
-  logic [31:0] a        =0;
-  logic [31:0] b        =0;
-  logic [ 2:0] alu_cntrl=0;
-  logic [31:0] ALUresult=0;
+
+  logic [31:0] a         = 0;
+  logic [31:0] b         = 0;
+  logic [ 2:0] alu_cntrl = 0;
+  logic [31:0] ALUresult = 0;
   // logic        zero     ;
   // logic        negative ;
   // logic        carry    ;
   //logic        over_flow;
-  logic [31:0] pc_target=0;
-  logic [31:0] pc_plus4=0 ;
+  logic [31:0] pc_target = 0;
+  logic [31:0] pc_plus4  = 0;
 
 
 // program_counter
@@ -56,6 +55,11 @@ module data_path (
     .pc     (pc     )
   );
 
+
+
+
+
+
 //pc + pc_next addr
   always @(*) begin : proc_
     pc_plus4  = 'd4 + pc;
@@ -65,7 +69,7 @@ module data_path (
 
   //mux to select pc if pc src one then instead pc+4 ,pc+imm-ext to jump on that addr
   mux_2to1 i_mux_2to1 (
-    .in1(pc_plus4  ),
+    .in1(pc_plus4 ),
     .in2(pc_target),
     .s  (pc_src   ),
     .out(pc_next  )
@@ -81,21 +85,21 @@ module data_path (
 
 
 
-  logic [31:0]read_data;//out of data memory
+  logic [31:0] read_data; //out of data memory
   logic [31:0] f_mux_out; //
-  logic [31:0] WD3;
+  logic [31:0] WD3      ;
 
 
   register_file i_register_file (
-    .clk (clk         ),
-    .srst(srst        ),
-    .A1  (instr[19:15]),
-    .A2  (instr[24:20] ),
-    .A3  (instr[11:7]),
-    .WD3 (f_mux_out   ),
-    .WE3 (reg_w       ),
-    .RD1 (scrA        ),
-    .RD2 (RD2         )
+    .clk (clk      ),
+    .srst(srst     ),
+    .A1  (A1       ),
+    .A2  (A2       ),
+    .A3  (A3       ),
+    .WD3 (f_mux_out),
+    .WE3 (reg_w    ),
+    .RD1 (scrA     ),
+    .RD2 (RD2      )
   );
 
 
@@ -145,6 +149,12 @@ module data_path (
     .out(f_mux_out )
   );
 
+
+  assign A1  = instr[19:15];
+  assign A2  = instr[24:20];
+  assign A3  = instr[11:7];
+  assign RD1 = scrA;
+  assign WD3 = f_mux_out;
 
 
 
