@@ -16,7 +16,7 @@ logic[31:0][31:0] memory;
 initial begin
 //lw instr
 memory[0]  ='0;
-memory[5]  = 'd5;// example 1 x5
+memory[5]  ='d5;// example 1 x5
 memory[9] ='h8;//x9
 
 end

@@ -12,9 +12,13 @@ initial begin
 	/*foreach(mem[i]) begin
 		mem[i]=i;
 	end*/
-	mem[4]='hA;
-	mem[8]='hf;
-	mem[12]='h1A;
+	mem[2]='h4;
+	mem[6]='hC;
+	mem[4]	= 'h8;
+	mem[8]	= 'hf;
+	mem[0] = 'h1A;
+
+	mem['h2000]='h10;
 end
 
 	always @(posedge clk) begin 
