@@ -11,11 +11,11 @@ module alu_decoder (
       alu_control = 3'b000;//add lw,sw instr
     else if(alu_op==2'b01)
       alu_control = 3'b001;//sub branch
-    else if(alu_op==2'b11)
+    else if(alu_op==2'b10)
       begin
         case({funct3,op_code[5],funct7[5]})
-          'b000_11 : alu_control =  3'b000;//add
-          'b000_?? : alu_control =  3'b001;//sub
+          'b000_11 : alu_control =  3'b001;//add
+          'b000_?? : alu_control =  3'b000;//sub
           'b010_?? : alu_control =  3'b101;//slt
           'b110_?? : alu_control =  3'b011;//or
           'b111_?? : alu_control =  3'b010;//and

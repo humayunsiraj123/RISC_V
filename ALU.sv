@@ -13,7 +13,7 @@ module ALU #(parameter WIDTH=32) (
 	logic             cout=0;
 
 
-	always_comb begin :alu_control
+	/*always_comb begin :alu_control
 		{cout,sum} = alu_cntrl[0] ?  a + (1+ (~b)): a + b ;
 		case (alu_cntrl[2:1])
 			2'b00 : result = sum;
@@ -21,10 +21,20 @@ module ALU #(parameter WIDTH=32) (
 			2'b10 : result = a & b;
 			2'b11 : result = a | b;
 		endcase
+*/
 
+  always_comb begin : proc_
+    case(alu_cntrl):
+      3'b000 : result = a+b;
+      3'b001 : result = a+ (~b) +1;
+      3'b010 : result = a & b;
+      3'b011 : result = a| b;
+      3'b101 : result = 31>>{a+b}; 
+      default: result = 0;
+  end
 		carry     = ~alu_cntrl[1] && cout;
 		over_flow = (sum[31] ^ a[31]) &&(~(a[31] ^b[31] ^ alu_cntrl[0])) && ~alu_cntrl[1];
-		zero     = &(!sum);
+		zero     = &(!(a+b));
 		negative = result[31];
 
 
