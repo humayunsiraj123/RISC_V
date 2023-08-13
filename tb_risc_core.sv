@@ -2,12 +2,18 @@ module tb_risc_core ();
 	logic clk  = 0;
 	logic srst = 0;
 
-	risc_core i_risc_core (
+/*	risc_core i_risc_core (
+		.clk (clk ),
+		.srst(srst)
+	);
+*/
+	top_riscv_single_cycle i_top_riscv_single_cycle (
 		.clk (clk ),
 		.srst(srst)
 	);
 
-	
+
+
 
 	always #10 clk =~clk;
 

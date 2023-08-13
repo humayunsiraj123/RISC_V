@@ -10,18 +10,17 @@ module datapath (
   input  logic        pc_src     ,
   input  logic [ 2:0] alu_control,
   input        [31:0] instr      ,
-  input        [31:0] read_data,
+  input        [31:0] read_data  ,
   output logic [31:0] write_data ,
-  output logic [31:0] ALUresult  , 
-  output logic [31:0] pc   ,
-  output logic        zero       
-
+  output logic [31:0] ALUresult  ,
+  output logic [31:0] pc         ,
+  output logic        zero
 );
 
   //pc = 0;
   logic [31:0] pc_next = 0;
-  
-  logic [31:0] Addr    = 0;
+
+  logic [31:0] Addr = 0;
 
   logic [11:0] imm     = 0;
   logic [31:0] imm_ext = 0;
@@ -41,7 +40,7 @@ module datapath (
   logic [31:0] a         = 0;
   logic [31:0] b         = 0;
   logic [ 2:0] alu_cntrl = 0;
-  
+
   logic [31:0] pc_target = 0;
   logic [31:0] pc_plus4  = 0;
 
@@ -81,15 +80,15 @@ module datapath (
 
 
   register_file i_register_file (
-    .clk (clk      ),
-    .srst(srst     ),
-    .A1  (A1       ),
-    .A2  (A2       ),
-    .A3  (A3       ),
-    .WD3 (f_mux_out),
-    .WE3 (reg_w    ),
-    .RD1 (scrA     ),
-    .RD2 (read_data )
+    .clk (clk       ),
+    .srst(srst      ),
+    .A1  (A1        ),
+    .A2  (A2        ),
+    .A3  (A3        ),
+    .WD3 (f_mux_out ),
+    .WE3 (reg_w     ),
+    .RD1 (scrA      ),
+    .RD2 (write_data)
   );
 
 
@@ -103,10 +102,10 @@ module datapath (
 //seleciton mux for  register file out2 to select input B for ALU
 
   mux_2to1 i2_mux_2to1 (
-    .in1(read_data    ),
-    .in2(imm_ext), //from extended module
-    .s  (alu_src),
-    .out(scrB   )
+    .in1(write_data),
+    .in2(imm_ext   ), //from extended module
+    .s  (alu_src   ),
+    .out(scrB      )
   );
 
 
