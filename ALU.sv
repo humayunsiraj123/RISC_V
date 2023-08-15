@@ -10,7 +10,8 @@ module ALU #(parameter WIDTH=32) (
 );
 
 	logic [WIDTH-1:0] sum =0;
-	logic             cout=0;
+	
+  logic             cout=0;
 
 
 	// always_comb begin :alu_control
@@ -24,19 +25,19 @@ module ALU #(parameter WIDTH=32) (
 
 
   always_comb begin : proc_
+   sum =a+b; 
+   result = 0;
     case(alu_cntrl)
-      3'b000 : {carry,result} = a+b;
-      3'b001 : {carry,result} = a+ (~b) +1;
+      3'b000 : {carry,result} = a + b;
+      3'b001 : {carry,result} = a +  (~b) +1;
       3'b010 : result = a & b;
       3'b011 : result = a|b;
-      3'b101 : result = 31>>(a+b); 
+      3'b101 : result[0] = a<b;//set if ais less than b
       default: result = 0;
     endcase
-  
-
 		carry     =  ~alu_cntrl[1] && cout;
 		over_flow = (sum[31] ^ a[31]) &&(~(a[31] ^b[31] ^ alu_cntrl[0])) && ~alu_cntrl[1];
-		zero     = &(!(a+b));
+		zero     = &(!(sum));
 		negative = result[31];
 
 
