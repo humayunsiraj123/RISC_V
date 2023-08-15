@@ -90,9 +90,10 @@ module top_riscv_single_cycle (
 		.WD  (write_data),
 		.RD  (read_data )
 	);
+
 always_comb begin : proc_
-assign opcode = instr[6:0];
- $cast(instr_name,opcode);
+  opcode = instr[6:0];
+  $cast(instr_name,instr[6:0]);
 
 end
 
