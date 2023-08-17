@@ -36,7 +36,7 @@ typedef enum logic[6:0] {
     op_code = instr[6:0];
     funct3  = instr[14:12];
     funct7  = instr[31:25];
-      $cast(instr_name,instr[6:0]);
+    $cast(instr_name,instr[6:0]);
   end
 
   control_path i_control_path (
