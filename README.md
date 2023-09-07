@@ -14,7 +14,8 @@ This repository contains the design and implementation of a RISC-V single-cycle 
 
 ## Introduction
 
-The RISC-V Single-Cycle Core is a simplified implementation of a RISC-V processor that executes each instruction in a single clock cycle. It is intended for educational purposes to demonstrate the basic concepts of processor architecture and instruction execution.
+The RISC-V Single-Cycle Core is a simplified implementa![RV32I isa](https://github.com/humayunsiraj123/RISC_V/assets/58903281/f1c78f29-1133-4a98-919a-146a576dd544)
+tion of a RISC-V processor that executes each instruction in a single clock cycle. It is intended for educational purposes to demonstrate the basic concepts of processor architecture and instruction execution.
 
 ## Modules
 
@@ -41,3 +42,4 @@ To simulate and test the RISC-V Single-Cycle Core, follow these steps:
 1. Clone this repository:
    ```bash
    git clone https://github.com/humayunsiraj123/RISC_V.git
+![RV32I isa](https://github.com/humayunsiraj123/RISC_V/assets/58903281/54a815cd-25a6-4a8d-b4d8-6a2d0e1a663e)
