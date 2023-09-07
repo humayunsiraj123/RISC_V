@@ -18,7 +18,8 @@ module main_decoder (
     BEQ    = 7'b1100011,
     I_TYPE = 7'b0010011,//itype instruction
     R_TYPE = 7'b0110011,
-    JAL    = 7'b1101111} instr_e;
+    JAL    = 7'b1101111,
+    U_TYPE = 7'b} instr_e;
 
   logic [10:0] decode_res;
   assign {reg_w,imm_src,alu_src,mem_w,result_src,branch,alu_op,jump} = decode_res;
