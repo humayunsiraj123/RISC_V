@@ -47,12 +47,12 @@ always_comb begin
 casez({op_code[5],funct7[5],funct3})
  'b10_000 : alu_control = 4'd0;// add reg
  'b11_000 : alu_control = 4'd1; // sub reg
- 'b10_001 : alu_control = 4'd; // sll  
+ 'b10_001 : alu_control = 4'd4; // sll shift logic left  
  'b10_010 : alu_control = 4'd5; // slt set less than
- 'b10_011 : alu_control = 4'd; // sltu usinged
- 'b10_100 : alu_control = 4'd; // xor
- 'b10_101 : alu_control = 4'd; // shift right logic
- 'b11_101 : alu_control = 4'd; // Shift arthmetic right
+ 'b10_011 : alu_control = 4'd5; // sltu usinged
+ 'b10_100 : alu_control = 4'd7; // xor
+ 'b10_101 : alu_control = 4'd8; // shift right logic
+ 'b11_101 : alu_control = 4'd9; // Shift arthmetic right
  'b10_110 : alu_control = 4'd3; // or
  'b10_111 : alu_control = 4'd2; // and
   endcase
