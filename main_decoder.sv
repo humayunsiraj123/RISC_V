@@ -16,14 +16,14 @@ module main_decoder (
     LW     = 7'b0000011,
     SW     = 7'b0100011,
     BEQ    = 7'b1100011,
-    I_TYPE = 7'b0010011,//itype instruction
+    I_TYPE = 7'b0010011,//itype instructions
     R_TYPE = 7'b0110011,
     JAL    = 7'b1101111,
     U_TYPE = 7'b} instr_e;
 
   logic [10:0] decode_res;
   assign {reg_w,imm_src,alu_src,mem_w,result_src,branch,alu_op,jump} = decode_res;
-
+//alu_op when 00 lw,sw(add) 01 ,beq =01 and 10 for other logic function
 
   always_comb begin : proc_main_decoder
     case (op_code)
