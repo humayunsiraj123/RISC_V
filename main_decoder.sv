@@ -21,7 +21,9 @@ module main_decoder (
     JALR   = 7'b1100111,
     LUI    = 7'b0110111,
     AUIPC  = 7'b0010111,
-    JUMP   = 7'b1101111} instr_e;
+    JUMP   = 7'b1101111,
+
+  } instr_e;
 
   //logic [13:0] control_sig;
   assign {reg_w,imm_src,alu_src,mem_w,result_src,branch,alu_op,jump} = control_sig;
@@ -37,6 +39,8 @@ module main_decoder (
     logic [2:0] imm_src   ;
     logic [3:0] reg_w     ; //lsb cntrl sig and [3:1] funct3;
     logic       pc_update ;
+    logic lui,
+    logic auipc,
   } cntrl_sigs_t ;
   cntrl_sigs_t control_sig;
   always_comb begin : proc_main_decoder
@@ -51,7 +55,11 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b0;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
+        control_sig.auipc     =   1'b0;
       end
       STORE :begin
         control_sig.reg_w     =    {funct3,1'b0};
@@ -63,6 +71,8 @@ module main_decoder (
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
         control_sig.pc_update = 1'b0;
+        control_sig.lui       =1'b0;
+        control_sig.auipc  = 1'b0;
       end
       R_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -74,6 +84,8 @@ module main_decoder (
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
         control_sig.pc_update = 1'b0;
+        control_sig.lui       =1'b0;
+        control_sig.auipc  = 1'b0;
       end
       I_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -85,6 +97,8 @@ module main_decoder (
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
         control_sig.pc_update = 1'b0;
+        control_sig.lui       = 1'b0;
+        control_sig.auipc     = 1'b0;
       end
       BRANCH :begin
         control_sig.reg_w     =   {3'b000,1'b0};
@@ -96,28 +110,36 @@ module main_decoder (
         control_sig.alu_op    =   2'b01;
         control_sig.jump      =   1'b0;
         control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
       end
       LUI :begin
+        //implemented as instead alu result forward diectly connected immediat with 4to1 mux instead alu result
+        //immedaite will be send when lui is high 
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
         control_sig.imm_src   =   3'b100;//utype immdiate
-        control_sig.alu_src   =   1'b0;
-        control_sig.mem_w     =   {funct3,1'b0};
-        control_sig.result_src=   2'b00;
-        control_sig.branch    =   1'b1;
-        control_sig.alu_op    =   2'b01;
+        control_sig.alu_src   =   1'b0;//
+        control_sig.mem_w     =   {funct3,1'b0};//no memory write
+        control_sig.result_src=   2'b00;//for lui immediate
+        control_sig.branch    =   1'b0;
+        control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b0;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b1;// need to forward that immediate
+        control_sig.auipc     =   1'b0;
       end
-      AUIPC :begin
+      AUIPC :begin//use 
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
         control_sig.imm_src   =   3'b100;//utype immdiate
         control_sig.alu_src   =   1'b0;
         control_sig.mem_w     =   {funct3,1'b0};
-        control_sig.result_src=   2'b00;
-        control_sig.branch    =   1'b1;
-        control_sig.alu_op    =   2'b01;
+        control_sig.result_src=   2'b00//immedaite vlaue from mux instead alu which pc+immext(utype);
+        control_sig.branch    =   1'b0;
+        control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b1;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b1;
       end
 
 
