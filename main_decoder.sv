@@ -84,12 +84,12 @@ module main_decoder (
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
         control_sig.pc_update = 1'b0;
-        control_sig.lui       =1'b0;
-        control_sig.auipc  = 1'b0;
+        control_sig.lui       = 1'b0;
+        control_sig.auipc     = 1'b0;
       end
       I_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
-        control_sig.imm_src   =   3'b000;
+        control_sig.imm_src   =   (funct3==3'b001 || funct3==3'b101)? 3'b101 :3'b000;//when shift imm intrs immediate is uimm 5bit shamt else 12 bit immediate 
         control_sig.alu_src   =   1'b0;
         control_sig.mem_w     =   {funct3,1'b0};
         control_sig.result_src=   2'b00;
@@ -140,6 +140,32 @@ module main_decoder (
         control_sig.pc_update =   1'b0;
         control_sig.lui       =   1'b0;
         control_sig.auipc     =   1'b1;
+      end
+      JUMP : begin//use 
+        control_sig.reg_w     =   {3'b010,1'b1};//full word write
+        control_sig.imm_src   =   3'b100;//jtype immdiate
+        control_sig.alu_src   =   1'b0;
+        control_sig.mem_w     =   {funct3,1'b0};
+        control_sig.result_src=   2'b10//pc+4 
+        control_sig.branch    =   1'b0;
+        control_sig.alu_op    =   2'b00;
+        control_sig.jump      =   1'b1;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
+      end
+      JALR : begin//use 
+        control_sig.reg_w     =   {3'b010,1'b1};//full word write
+        control_sig.imm_src   =   3'b000;//itype immdiate
+        control_sig.alu_src   =   1'b0;
+        control_sig.mem_w     =   {funct3,1'b0};
+        control_sig.result_src=   2'b10//pc+4 
+        control_sig.branch    =   1'b0;
+        control_sig.alu_op    =   2'b00;
+        control_sig.jump      =   1'b1;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b1;//it saves imme+pc value ussing auipc sigs not actual aupic instr
       end
 
 

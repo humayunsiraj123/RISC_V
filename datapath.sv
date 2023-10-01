@@ -101,7 +101,7 @@ module datapath (
     .imm_ext(imm_ext)  // o mux of alu
   );
 
-//seleciton mux for  register file out2 to select input B for ALU
+//selection mux for  register file out2 to select input B for ALU
 
   mux_2to1 i2_mux_2to1 (
     .in1(write_data),
