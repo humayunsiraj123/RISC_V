@@ -36,6 +36,7 @@ module main_decoder (
     logic       alu_src   ;
     logic [2:0] imm_src   ;
     logic [3:0] reg_w     ; //lsb cntrl sig and [3:1] funct3;
+    logic       pc_update ;
   } cntrl_sigs_t ;
   cntrl_sigs_t control_sig;
   always_comb begin : proc_main_decoder
@@ -50,6 +51,7 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b0;
       end
       STORE :begin
         control_sig.reg_w     =    {funct3,1'b0};
@@ -60,6 +62,7 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b0;
       end
       R_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -70,6 +73,7 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b0;
       end
       I_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -80,9 +84,10 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b0;
       end
       BRANCH :begin
-        control_sig.reg_w     =   {3'b000,1'b0};//full word write
+        control_sig.reg_w     =   {3'b000,1'b0};
         control_sig.imm_src   =   3'b010;
         control_sig.alu_src   =   1'b0;
         control_sig.mem_w     =   {funct3,1'b0};
@@ -90,7 +95,32 @@ module main_decoder (
         control_sig.branch    =   1'b1;
         control_sig.alu_op    =   2'b01;
         control_sig.jump      =   1'b0;
+        control_sig.pc_update =   1'b0;
       end
+      LUI :begin
+        control_sig.reg_w     =   {3'b010,1'b1};//full word write
+        control_sig.imm_src   =   3'b100;//utype immdiate
+        control_sig.alu_src   =   1'b0;
+        control_sig.mem_w     =   {funct3,1'b0};
+        control_sig.result_src=   2'b00;
+        control_sig.branch    =   1'b1;
+        control_sig.alu_op    =   2'b01;
+        control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b0;
+      end
+      AUIPC :begin
+        control_sig.reg_w     =   {3'b010,1'b1};//full word write
+        control_sig.imm_src   =   3'b100;//utype immdiate
+        control_sig.alu_src   =   1'b0;
+        control_sig.mem_w     =   {funct3,1'b0};
+        control_sig.result_src=   2'b00;
+        control_sig.branch    =   1'b1;
+        control_sig.alu_op    =   2'b01;
+        control_sig.jump      =   1'b0;
+        control_sig.pc_update = 1'b1;
+      end
+
+
 // always_comb
 //  case(WE[3:1])
 //   3'd0:load_type = {{24{data_in[31]}},data_in[7:0]};// load byte
