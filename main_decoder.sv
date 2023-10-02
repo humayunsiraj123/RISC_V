@@ -43,11 +43,12 @@ module main_decoder (
     logic auipc,
   } cntrl_sigs_t ;
   cntrl_sigs_t control_sig;
+
   always_comb begin : proc_main_decoder
-    control_sig ='0;
+    control_sig ='0;//avoid latch
     case(op_code)
       LOAD :begin
-        control_sig.reg_w     =    {funct3,1'b1};
+        control_sig.reg_w     =   {funct3,1'b1};
         control_sig.imm_src   =   3'b000;
         control_sig.alu_src   =   1'b1;
         control_sig.mem_w     =   {funct3,1'b0};
@@ -58,8 +59,6 @@ module main_decoder (
         control_sig.pc_update =   1'b0;
         control_sig.lui       =   1'b0;
         control_sig.lui       =   1'b0;
-        control_sig.auipc     =   1'b0;
-        control_sig.auipc     =   1'b0;
       end
       STORE :begin
         control_sig.reg_w     =    {funct3,1'b0};
@@ -70,9 +69,9 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b0;
-        control_sig.lui       =1'b0;
-        control_sig.auipc  = 1'b0;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
       end
       R_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -81,11 +80,11 @@ module main_decoder (
         control_sig.mem_w     =   {3'b000,1'b0};
         control_sig.result_src=   2'b00;
         control_sig.branch    =   1'b0;
-        control_sig.alu_op    =   2'b10;
+        control_sig.alu_op    =   2'b10;// 
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b0;
-        control_sig.lui       = 1'b0;
-        control_sig.auipc     = 1'b0;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
       end
       I_TYPE :begin
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -96,9 +95,9 @@ module main_decoder (
         control_sig.branch    =   1'b0;
         control_sig.alu_op    =   2'b10;
         control_sig.jump      =   1'b0;
-        control_sig.pc_update = 1'b0;
-        control_sig.lui       = 1'b0;
-        control_sig.auipc     = 1'b0;
+        control_sig.pc_update =   1'b0;
+        control_sig.lui       =   1'b0;
+        control_sig.auipc     =   1'b0;
       end
       BRANCH :begin
         control_sig.reg_w     =   {3'b000,1'b0};
@@ -167,7 +166,7 @@ module main_decoder (
         control_sig.lui       =   1'b0;
         control_sig.auipc     =   1'b1;//it saves imme+pc value ussing auipc sigs not actual aupic instr
       end
-
+    endcase
 
 // always_comb
 //  case(WE[3:1])

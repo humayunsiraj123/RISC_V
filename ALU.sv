@@ -1,7 +1,7 @@
 module ALU #(parameter WIDTH=32) (
-	input        [WIDTH-1:0] a        ,
-	input        [WIDTH-1:0] b        ,
-	input        [      3:0] alu_cntrl,
+	input        [WIDTH-1:0] SrcA     ,
+	input        [WIDTH-1:0] SrcB     ,
+	input        [      5:0] alu_cntrl,
 	output logic [WIDTH-1:0] result   ,
 	output logic             zero     ,
 	output logic             negative ,
@@ -46,21 +46,23 @@ module ALU #(parameter WIDTH=32) (
 	always_comb begin : proc_
 		sum    = SrcA+srcB;
 		result = 0;
-		case(alu_cntrl)
-			4'd0    : {carry,result} = SrcA + srcB;  // add reg
-			4'd1    : {carry,result} = SrcA +  (~srcB) +1; //susrcB
-			4'd2    : result         = SrcA & srcB;//AND
-			4'd3    : result         = SrcA|srcB; //OR
-			4'd4    : result         = SrcA<<srcB;//left shift
-			4'd5    : result[0]      = SrcA<srcB;//set if is less than srcB
-			4'd6    : result[0]  	= (srcB!=0 && $signed(SrcA)< $signed(srcB)) ;//SLTU unsigned
-			4'd7    : result  		= SrcA ^ srcB; //xor
-			4'd8    : result  		= SrcA>>srcB; //right sifht
-			4'd9    : result  		= SrcA>>>srcB; //arthmetic right shift
-			default : result 		= 0;
-		endcase
+		if(alu_cntrl[5:4]==2'b00)//alu_op type
+
+			case(alu_cntrl[3:0])//{funct7[5],funct3}
+				3'd0    : {carry,result} = alu_cntrl[3] ? (SrcA +  (~SrcB) +1 ) : (SrcA + SrcB);  // sub if f7[5]=1 else simple add
+				3'd1    : result         = SrcA << SrcB[4:0] ;//shift logic left
+				3'd2    : result      	 = {'0,SrcA<SrcB};//set if srcA is less than srcB
+				3'd2    : result         = SrcA & SrcB;//AND
+				3'd3    : result         = SrcA|SrcB; //OR
+				3'd4    : result         = SrcA<<SrcB;//left shift
+				3'd6    : result[0]  	= (SrcB!=0 && $signed(SrcA)< $signed(SrcB)) ;//SLTU unsigned
+				3'd7    : result  		= SrcA ^ SrcB; //xor
+				3'd8    : result  		= SrcA>>SrcB; //right sifht
+				3'd9    : result  		= SrcA>>>SrcB; //arthmetic right shift
+				default : result 		= 0;
+			endcase
 		carry     = ~alu_cntrl[1] && cout;
-		over_flow = (sum[31] ^ SrcA[31]) &&(~(SrcA[31] ^srcB[31] ^ alu_cntrl[0])) && ~alu_cntrl[1];
+		over_flow = (sum[31] ^ SrcA[31]) &&(~(SrcA[31] ^SrcB[31] ^ alu_cntrl[0])) && ~alu_cntrl[1];
 		zero      = &(!(sum));
 		negative  = result[31];
 
