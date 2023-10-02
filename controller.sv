@@ -51,7 +51,7 @@ module controller (
   );
 
   always_comb begin : proc_x
-    pc_src = (branch&&zero) || jump;//add jal branch support
+    pc_src = (branch && zero) || jump;//add jal branch support
   end
 
 

@@ -35,8 +35,6 @@ module control_path (
   );
 
 
-
-
   alu_decoder i_alu_decoder (
     .funct3     (funct3     ),
     .funct7     (funct7     ),
@@ -46,7 +44,7 @@ module control_path (
   );
 
   always_comb begin : proc_x
-    pc_src = (branch&&zero) || jump;//add jal branch support
+    pc_src = (branch && zero) || jump;//selecting pc src based on jump and branch instr
   end
 
 

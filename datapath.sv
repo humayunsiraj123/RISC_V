@@ -43,9 +43,9 @@ module datapath (
   logic [31:0] b         = 0;
   logic [ 2:0] alu_cntrl = 0;
 
-  logic [31:0] pc_target = 0;
-  logic [31:0] pc_plus4  = 0;
-  logic alu_result;
+  logic [31:0] pc_target  = 0;
+  logic [31:0] pc_plus4   = 0;
+  logic        alu_result    ;
 
 // program_counter
   pc_reg i_pc_reg (
@@ -115,7 +115,7 @@ module datapath (
     .a        (scrA       ),
     .b        (scrB       ),
     .alu_cntrl(alu_control),
-    .result   (alu_result ),//alu_result forwarded to mux
+    .result   (alu_result ), //alu_result forwarded to mux
     .zero     (zero       ),
     .negative (negative   ),
     .carry    (carry      ),
@@ -126,12 +126,12 @@ module datapath (
 // when lui intr utype immediate will be forwadred to alu_result; while auipc then utype_imm+pc is forwared
 // this approach turn simplar handling hazard
   mux_4to1 alu_result_mux (
-    .in1(alu_result ),//'00 
-    .in2(imm_ext ),
+    .in1(alu_result ), //'00
+    .in2(imm_ext    ),
     .in3(pc_target  ),
-    .in4('0        ),
+    .in4(pc_plus4   ), //when jump and jalr
     .s  ({auipc,lui}),
-    .out(ALUresult )
+    .out(ALUresult  )
   );
 
 

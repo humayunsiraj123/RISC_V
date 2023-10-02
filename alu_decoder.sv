@@ -6,23 +6,11 @@ module alu_decoder (
   output logic [5:0] alu_control //{op[1:0],fun7[5],funct3[2:0]};
 );
 
-logic [1:0]op_funct7;
-
-
-/*0110011 (51) 000 0000000 R add rd, rs1, rs2 add rd = rs1 + rs2
-0110011 (51) 000 0100000 R sub rd, rs1, rs2 sub rd = rs1 — rs2
-0110011 (51) 001 0000000 R sll rd, rs1, rs2 shift left logical rd = rs1 << rs24:0
-0110011 (51) 010 0000000 R slt rd, rs1, rs2 set less than rd = (rs1 < rs2)
-0110011 (51) 011 0000000 R sltu rd, rs1, rs2 set less than unsigned rd = (rs1 < rs2)
-0110011 (51) 100 0000000 R xor rd, rs1, rs2 xor rd = rs1 ^ rs2
-0110011 (51) 101 0000000 R srl rd, rs1, rs2 shift right logical rd = rs1 >> rs24:0
-0110011 (51) 101 0100000 R sra rd, rs1, rs2 shift right arithmetic rd = rs1 >>> rs24:0
-0110011 (51) 110 0000000 R or rd, rs1, rs2 or rd = rs1 | rs2
-0110011 (51) 111 0000000 R and rd, rs1, rs2 and rd = rs1 & rs2
-*/
-
+//lui,aupic jal, jalr instr are are using another adder that result pc+imm/pc+4 so instead designing
+//alu decode for above instr we have handled them in main decoder as the reesult generate from thsi is forward using
+//mux that select either alu_result is forward to next stage or mux other input base on cntrol sig auipc lui 
 always_comb begin 
-  if(alu_op = 2'b00) //load ,store, lui,auipc
+  if(alu_op = 2'b00) //load ,store, lui,auipc,jal,jalr
     alu_control = 6'b00_0_000;//add
   else if(alu_op = 2'b10)
     alu_control  = {2'b00,funct7[5],funct3};//to handle r_type and itype instr

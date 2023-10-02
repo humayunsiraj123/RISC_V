@@ -150,8 +150,8 @@ module main_decoder (
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b1;
         control_sig.pc_update =   1'b0;
-        control_sig.lui       =   1'b0;
-        control_sig.auipc     =   1'b0;
+        control_sig.lui       =   1'b1;//for jlar and jal as we use mux to select alu result and when these intr pc+4 save in rd
+        control_sig.auipc     =   1'b1;//for jlar and jal as we use mux to select alu result and when these intr pc+4 save in rd
       end
       JALR : begin//use 
         control_sig.reg_w     =   {3'b010,1'b1};//full word write
@@ -163,7 +163,7 @@ module main_decoder (
         control_sig.alu_op    =   2'b00;
         control_sig.jump      =   1'b1;
         control_sig.pc_update =   1'b0;
-        control_sig.lui       =   1'b0;
+        control_sig.lui       =   1'b1;//for jlar and jal as we use mux to select alu result and when these intr pc+4 save in rd
         control_sig.auipc     =   1'b1;//it saves imme+pc value ussing auipc sigs not actual aupic instr
       end
     endcase
