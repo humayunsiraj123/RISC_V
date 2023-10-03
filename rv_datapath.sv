@@ -19,31 +19,38 @@ module rv_datapath (
   output logic        zero
 );
 
-  pc = 0;
-  logic [31:0] pc_next = 0;
+  //pc signals
+  logic [31:0] pc_target = 0;
+  logic [31:0] pc_plus4  = 0;
+  logic [31:0] pc_next   = 0;
+
+// register files signals
+  logic [31:0] f_mux_out    ; //
+  logic [ 4:0] A1           ;
+  logic [ 4:0] A2           ;
+  logic [ 4:0] A3           ;
+  logic [31:0] WD3          ;
+  logic [ 3:0] WE3       = 0;
+  logic [31:0] RD1          ;
+  logic [31:0] RD2       = 0;
 
   // logic [31:0] Addr = 0;
 
-  // logic [11:0] imm     = 0;
-  // logic [31:0] imm_ext = 0;
+// extended module sig
+  logic [11:0] imm     = 0;
+  logic [31:0] imm_ext = 0;
 
-  // logic [31:0] scrA = 0;
-  // logic [31:0] scrB = 0;
-
-  // logic [ 4:0] A1     ;
-  // logic [ 4:0] A2     ;
-  // logic [ 4:0] A3     ;
-  // logic        WE3 = 0;
-  // logic [31:0] RD1    ;
-  // logic [31:0] RD2 = 0;
+// Alu sig
+  logic [31:0] scrA       = 0;
+  logic [31:0] scrB       = 0;
+  logic [31:0] alu_result    ;
 
 
-
-  logic [31:0] pc_target  = 0;
-  logic [31:0] pc_plus4   = 0;
-  logic        alu_result    ;
-
-
+  assign A1  = instr[19:15];
+  assign A2  = instr[24:20];
+  assign A3  = instr[11:7];
+  assign RD1 = scrA;
+  assign WD3 = f_mux_out;
 
 
 
@@ -52,7 +59,7 @@ module rv_datapath (
     .clk    (clk    ),
     .srst   (srst   ),
     .pc_next(pc_next),
-    .pc     (pc     )
+    .pc     (pc     )  //PCF program counter reg output
   );
 
 //pc + pc_next addr
@@ -70,16 +77,15 @@ module rv_datapath (
   );
 
 
-// register files signals
-  logic [31:0] f_mux_out; //
-  logic [ 4:0] A1       ;
-  logic [ 4:0] A2       ;
-  logic [ 4:0] A3       ;
-  logic [31:0] WD3      ;
-  logic [ 3:0] WE3      ;
-  logic [31:0] RD1      ;
-  logic [31:0] RD2      ;
+// sign immediate extend module
+  extend i_extend (
+    .imm    (instr  ),
+    .imm_src(imm_src),
+    .imm_ext(imm_ext)  // o mux of alu
+  );
 
+
+//regsiter files
   register_file i_register_file (
     .clk (clk       ),
     .srst(srst      ),
@@ -92,13 +98,6 @@ module rv_datapath (
     .RD2 (write_data)
   );
 
-
-// sign immediate extend module 
-  extend i_extend (
-    .imm    (instr  ),
-    .imm_src(imm_src),
-    .imm_ext(imm_ext)  // o mux of alu
-  );
 
 //selection of input of alu based on alu_src b/w data-from reg_file rd2 i.e write_data and immediate
   mux_2to1 i2_mux_2to1 (
@@ -113,8 +112,8 @@ module rv_datapath (
     .a        (scrA       ),
     .b        (scrB       ),
     .alu_cntrl(alu_control),
-    .result   (alu_result ), //alu_result forwarded to mux
-    .zero     (zero       ),
+    .result   (ALUresult  ), //alu_result forwarded to mux
+    .zero     (zero       ), //for branch instr
     .negative (negative   ),
     .carry    (carry      ),
     .over_flow(over_flow  )
@@ -143,14 +142,6 @@ module rv_datapath (
     .s  (result_src),
     .out(f_mux_out )
   );
-
-
-  assign A1  = instr[19:15];
-  assign A2  = instr[24:20];
-  assign A3  = instr[11:7];
-  assign RD1 = scrA;
-  assign WD3 = f_mux_out;
-
 
 
 endmodule
