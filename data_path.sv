@@ -1,14 +1,14 @@
 module data_path (
   input               clk        , // Clock
-  input               srst       , // Asynchronous reset active low
+  input               srst       , // 
   input  logic        branch     ,
   input  logic [ 1:0] result_src ,
-  input  logic        mem_w      ,
+  input  logic [3:0]       mem_w      ,
   input  logic        alu_src    ,
   input  logic [ 1:0] imm_src    ,
-  input  logic        reg_w      ,
+  input  logic [3:0]      reg_w      ,
   input  logic        pc_src     ,
-  input  logic [ 2:0] alu_control,
+  input  logic [ 5:0] alu_control,
   output logic        zero       ,
   output logic        negative   ,
   output logic        carry      ,

@@ -1,4 +1,6 @@
-module controller (
+module controller 
+  import riscv_pkg :: *;
+  (
   input        [31:0] instr      ,
   input               zero       ,
   output logic        jump       ,
@@ -23,8 +25,6 @@ module controller (
       funct3  = instr[14:12];
       funct7  = instr[31:25];
     end
-
-
 
   //logic [1:0] imm_src;
   //addedI type and jal instrution support
