@@ -13,29 +13,29 @@ module top_riscv_single_cycle (
 	instr_e instr_name;
 
 
-	logic [31:0] instr      ;
-	logic        zero       ;
-	logic        jump       ;
-	logic        branch     ;
-	logic [ 1:0] result_src ;
-	logic        mem_w      ;
-	logic        alu_src    ;
-	logic [ 1:0] imm_src    ;
-	logic        reg_w      ;
-	logic        pc_src     ;
-	logic [ 2:0] alu_control;
-  logic [6:0] opcode ;
+	// logic [31:0] instr      ;
+	// logic        zero       ;
+	// logic        jump       ;
+	// logic        branch     ;
+	// logic [ 1:0] result_src ;
+	// logic        mem_w      ;
+	// logic        alu_src    ;
+	// logic [ 1:0] imm_src    ;
+	// logic        reg_w      ;
+	// logic        pc_src     ;
+	// logic [ 2:0] alu_control;
+ //  	logic [6:0] opcode ;
 	
-	logic [31:0] read_data ;
-	logic [31:0] write_data;
-	logic [31:0] ALUresult ;
-	logic [31:0] pc        ;
-	logic [31:0] Addr      ;
-	logic [31:0] RD        ;
+	// logic [31:0] read_data ;
+	// logic [31:0] write_data;
+	// logic [31:0] ALUresult ;
+	// logic [31:0] pc        ;
+	// logic [31:0] Addr      ;
+	// logic [31:0] RD        ;
 
-	logic        WE;
-	logic [31:0] A ;
-	logic [31:0] WD;
+	// logic        WE;
+	// logic [31:0] A ;
+	// logic [31:0] WD;
 
 
 

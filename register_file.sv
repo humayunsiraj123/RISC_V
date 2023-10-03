@@ -8,7 +8,6 @@ module register_file(
 	input[3:0]WE3,
 	output logic [31:0]RD1,
 	output logic [31:0]RD2
-
 	);
 
 logic[31:0][31:0] memory;

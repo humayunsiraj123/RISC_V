@@ -93,6 +93,20 @@ module datapath (
     .RD2 (write_data)
   );
 
+  register_file i_register_file (
+  .clk (clk ),
+  .srst(srst),
+  .A1  (A1  ),
+  .A2  (A2  ),
+  .A3  (A3  ),
+  .WD3 (WD3 ),
+  .WE3 (WE3 ), // TODO: Check connection ! Signal/port not matching : Expecting logic [3:0]  -- Found logic 
+  .RD1 (RD1 ),
+  .RD2 (RD2 )
+);
+
+
+
 
 // sign immediate extending module
   extend i_extend (

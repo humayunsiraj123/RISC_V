@@ -3,7 +3,7 @@ module data_path (
   input               srst       , // 
   input  logic        branch     ,
   input  logic [ 1:0] result_src ,
-  input  logic [3:0]       mem_w      ,
+  input  logic [3:0]       mem_w  ,
   input  logic        alu_src    ,
   input  logic [ 1:0] imm_src    ,
   input  logic [3:0]      reg_w      ,
