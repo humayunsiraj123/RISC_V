@@ -41,7 +41,6 @@ module rv_controller
     .alu_control(alu_control)  // TODO: Check connection ! Signal/port not matching : Expecting logic [5:0]  -- Found logic [2:0]
   );
 
-
   main_decoder i_main_decoder (
     .op_code    (op_code    ),
     .funct3     (funct3     ),
@@ -62,10 +61,8 @@ module rv_controller
     imm_src    = control_sig.imm_src;
   end
 
-
-
   always_comb begin : proc_x
-    pc_src = (branch && zero) || jump;//add jal branch support
+    pc_src = (branch && zero) || jump;//branch or jal/jalr
   end
 
 
